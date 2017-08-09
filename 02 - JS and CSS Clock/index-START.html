@@ -62,9 +62,19 @@
       background:black;
       position: absolute;
       top:50%;
+      /* Changes the pivot point to the right side of the line  */
+      transform-origin: 100%;
+      /* Rotates the clock hands so it faces 12  */
+      transform: rotate(90deg);
+      /* Gives it a transition animation  */
+      transition: all 0.5s;
+      /* Gives it the tick movement (done by editing it in chrome dev toos)  */
+      transition-timing-function: cubic-bezier(0.46, 2.26, 0.5, 2.28)
     }
 
   </style>
+
+  <script src="jsCssClock.js"></script>
 
   <script>
 
