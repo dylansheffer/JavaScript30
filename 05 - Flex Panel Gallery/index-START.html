@@ -24,6 +24,7 @@
     .panels {
       min-height:100vh;
       overflow: hidden;
+      display: flex;
     }
 
     .panel {
@@ -41,6 +42,15 @@
       font-size: 20px;
       background-size:cover;
       background-position:center;
+      /* flex of 1 means that each gets equal space */
+      flex: 1;
+      justify-content: center;
+      align-items: center;
+      /* Making the panel both a flex panel and container */
+      /* Makes the children elements (the text) stack from left to right */
+      display: flex;
+      /* Verically centers the child elements */
+      flex-direction: column;
     }
 
 
@@ -50,11 +60,30 @@
     .panel4 { background-image:url(https://source.unsplash.com/ITjiVXcwVng/1500x1500); }
     .panel5 { background-image:url(https://source.unsplash.com/3MNzGlQM7qs/1500x1500); }
 
+    /* Flex Items */
+    /* Selects all the children elements in a class */
     .panel > * {
       margin:0;
       width: 100%;
       transition:transform 0.5s;
+      /* Somehow centers the children elements and spaces them evenly 🤷‍ */
+      flex: 1 0 auto; 
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      /* border: 1px solid red; */
     }
+
+    .panel > *:first-child {
+      transform: translateY(-100%);
+    }
+
+    .panel.open-active > *:first-child {transform: translateY(0)}
+
+    .panel > *:last-child {
+      transform: translateY(100%);
+    }
+    .panel.open-active > *:last-child {transform: translateY(0)}
 
     .panel p {
       text-transform: uppercase;
@@ -68,6 +97,9 @@
 
     .panel.open {
       font-size:40px;
+      /* flex of 5 means that the open element 
+      gets 5 times the space as the rest of them*/
+      flex: 5;
     }
 
   </style>
@@ -102,7 +134,30 @@
   </div>
 
   <script>
+    const panels = document.querySelectorAll('.panel');
 
+    // Toggles on and off the 'open' class
+    function toggleOpen(){
+      this.classList.toggle('open');
+    }
+
+    function toggleActive(e){
+      //Because there are 2 transition names, we must check for the flex-grow even
+
+      // Because Safari calls the event flex instead of flex-grow, we'll just look
+      // To see if it contains the word flex.
+      if(e.propertyName.includes('flex')){
+        this.classList.toggle('open-active');
+      }
+    }
+
+    // Adds a click even listener on the panels that will call toggleOpen
+
+    // Side note: we don't give it toggleOpen() because the parens make it
+    // load on page load. Just passing it toggleOpen will just give the listener
+    // a reference to the function
+    panels.forEach(panel => panel.addEventListener('click', toggleOpen));
+    panels.forEach(panel => panel.addEventListener('transitionend', toggleActive));
   </script>
 
 
