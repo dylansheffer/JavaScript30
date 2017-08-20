@@ -7,6 +7,75 @@
 <body>
 <canvas id="draw" width="800" height="800"></canvas>
 <script>
+const canvas = document.querySelector('#draw');
+// We actually draw on the canvas' context
+const ctx = canvas.getContext('2d');
+//Makes the canvas the size of the window
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+ctx.strokeStyle = '#BADA55';
+// Controls the shape of the lines
+ctx.lineJoin = 'round';
+ctx.lineCap = 'round';
+ctx.lineWidth = 1;
+// like photoshop blend modes
+//ctx.globalCompositeOperation = 'multiply';
+
+// A flag for when we should be drawing
+let isDrawing = false;
+let lastX = 0;
+let lastY = 0;
+let hue = 0;
+let direction = true;
+
+function draw(e) {
+  // Stops the even if we are not drawing
+  if(!isDrawing) return;
+  console.log(e);
+  // sets the hue saturation light of the stroke
+  ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+
+  // creates the line
+  ctx.beginPath();
+  
+  // start from
+  ctx.moveTo(lastX, lastY);
+  
+  // go to
+  ctx.lineTo(e.offsetX, e.offsetY);
+  
+  // actually draws the line
+  ctx.stroke();
+  
+  // update the lastX and lastY
+  // lastX = e.offsetX;
+  // lastY = e.offsetY;
+  [lastX,lastY] = [e.offsetX, e.offsetY];
+  
+  // increments hue, so the color will change as we move
+  // the tenery operator isn't completely necesary because hsl will
+  // reset it for us
+  hue < 360 ? hue++ : hue = 0;
+
+  // logic to decide whether the size should go up or down
+  if(ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
+    direction = !direction
+  }
+
+  // makes the lines increment up or down based off its size
+  direction ? ctx.lineWidth++ : ctx.lineWidth--;
+}
+
+canvas.addEventListener('mousedown', (e) => {
+  //update the last x and y so it will start at the correct position
+  [lastX,lastY] = [e.offsetX, e.offsetY];
+  isDrawing = true
+  });
+canvas.addEventListener('mousemove', draw);
+canvas.addEventListener('mouseup', () => isDrawing = false);
+// without this, you can click+hold as you leave the window, let go of the button
+// and come back and the browser will still think you are clicking
+canvas.addEventListener('mouseout', () => isDrawing = false);
 </script>
 
 <style>
