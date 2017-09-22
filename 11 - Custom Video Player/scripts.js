@@ -6,6 +6,7 @@ const toggle = player.querySelector('.toggle');
 // skipButtons is selecing all elements with a 'data-skip' custom element
 const skipButtons = player.querySelectorAll('[data-skip]');
 const ranges = player.querySelectorAll('.player__slider');
+const fullscreen = player.querySelector('.fullscreen');
 
 function togglePlay() {
     // if(video.paused) {
@@ -47,6 +48,19 @@ function scrub(e) {
     console.log(e);
 }
 
+function toggleFullscreen() {
+    if(!document.fullscreenElement) {
+        const calls = video.requestFullscreen
+            || video.webkitRequestFullScreen
+            || video.mozRequestFullScreen
+            || video.msRequestFullscreen
+        ;
+        calls.call(video);
+    } else {
+        document.exitFullscreen();
+    }
+}
+
 video.addEventListener('click', togglePlay);
 video.addEventListener('play', updateButton);
 video.addEventListener('pause', updateButton);
@@ -63,4 +77,6 @@ progress.addEventListener('click', scrub);
 progress.addEventListener('mousemove', (e) => mousedown && scrub(e));
 progress.addEventListener('mousedown', () => mousedown = true);
 progress.addEventListener('mouseup', () => mousedown = false);
+
+fullscreen.addEventListener('click', toggleFullscreen);
 

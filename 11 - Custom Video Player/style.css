@@ -58,6 +58,10 @@ body {
   border-color: #ffc600;
 }
 
+.player__button img {
+  width: 15px;
+}
+
 .player__slider {
   width:10px;
   height:30px;
