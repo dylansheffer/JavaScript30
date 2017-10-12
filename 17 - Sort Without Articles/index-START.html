@@ -46,35 +46,57 @@
 <script>
 const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
 
-let bandList = document.getElementById("bands");
-
-const sortedBands = bands.sort((lastBand, nextBand) => {
-      // Remove article if name contains article
-      let lastNoArticle = removeArticle(lastBand);
-      let nextNoArticle = removeArticle(nextBand);
-      console.log(`lastNoArticle: ${lastNoArticle} | nextNoArticle: ${nextNoArticle}`)
-      return lastNoArticle > nextNoArticle ? 1 : -1;
-});
-
-(sortedBands.forEach(band => {
-  let newLi = document.createElement("li");
-  let content = document.createTextNode(band)
-  newLi.appendChild(content);
-  bandList.appendChild(newLi);
-}));
-
-function removeArticle(bandName) {
-  const articles = ['A ', 'An ', 'The '];
-  let trimmedBandName = '';
-  articles.forEach(a => {
-    let length = a.length;
-    if (bandName.substr(0, length) == a ) {
-      trimmedBandName =  bandName.substr(length, bandName.length);
-    }
-  });
-  console.log(`removeArticle Returning... ${bandName}`);
-  return (trimmedBandName != '') ? trimmedBandName : bandName;
+/*** Wes' Solution ***/
+function strip(bandName) {
+  // Regex looks at the begining of the word and checks if the
+  // words exist (case insensitive) and trims off spaces
+  return bandName.replace(/^(a |the |an )/i, '').trim();
 }
+
+// Using the implicit return
+const sortedBands = bands.sort((a, b) => strip(a) > strip(b) ? 1 : -1);
+
+document.querySelector('#bands').innerHTML =
+  sortedBands
+    // .map does an operation on each element in an array
+    .map(band => `<li>${band}</li>`)
+    // .join will convert the array returned by map into a big string
+    .join('');
+
+console.log(sortedBands);
+
+
+/*** My Solution ***/
+
+// let bandList = document.getElementById("bands");
+
+// const sortedBands = bands.sort((lastBand, nextBand) => {
+//       // Remove article if name contains article
+//       let lastNoArticle = removeArticle(lastBand);
+//       let nextNoArticle = removeArticle(nextBand);
+//       console.log(`lastNoArticle: ${lastNoArticle} | nextNoArticle: ${nextNoArticle}`)
+//       return lastNoArticle > nextNoArticle ? 1 : -1;
+// });
+
+// (sortedBands.forEach(band => {
+//   let newLi = document.createElement("li");
+//   let content = document.createTextNode(band)
+//   newLi.appendChild(content);
+//   bandList.appendChild(newLi);
+// }));
+
+// function removeArticle(bandName) {
+//   const articles = ['A ', 'An ', 'The '];
+//   let trimmedBandName = '';
+//   articles.forEach(a => {
+//     let length = a.length;
+//     if (bandName.substr(0, length) == a ) {
+//       trimmedBandName =  bandName.substr(length, bandName.length);
+//     }
+//   });
+//   console.log(`removeArticle Returning... ${bandName}`);
+//   return (trimmedBandName != '') ? trimmedBandName : bandName;
+// }
 </script>
 
 </body>
