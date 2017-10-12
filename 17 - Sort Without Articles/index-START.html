@@ -57,9 +57,10 @@ const sortedBands = bands.sort((lastBand, nextBand) => {
 });
 
 (sortedBands.forEach(band => {
-  let newLi = document.createElement('li');
-  let element = newLi.appendChild(document.createTextNode(band));
-  bandList.appendChild(element);
+  let newLi = document.createElement("li");
+  let content = document.createTextNode(band)
+  newLi.appendChild(content);
+  bandList.appendChild(newLi);
 }));
 
 function removeArticle(bandName) {
