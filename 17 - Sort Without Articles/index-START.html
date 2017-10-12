@@ -46,7 +46,32 @@
 <script>
 const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil', 'Norma Jean', 'The Bled', 'Say Anything', 'The Midway State', 'We Came as Romans', 'Counterparts', 'Oh, Sleeper', 'A Skylit Drive', 'Anywhere But Here', 'An Old Dog'];
 
+const sortedBands = bands.sort((lastBand, nextBand) => {
+      // Remove article if name contains article
+      let lastNoArticle = removeArticle(lastBand);
+      let nextNoArticle = removeArticle(nextBand);
+      console.log(`lastNoArticle: ${lastNoArticle} | nextNoArticle: ${nextNoArticle}`)
+      return lastNoArticle > nextNoArticle ? 1 : -1;
+});
 
+function removeArticle(bandName) {
+  const articles = ['A ', 'An ', 'The '];
+  // loop through article list
+  articles.forEach(a => {
+    // Corrected for array index
+    var length = a.length;
+    // check if the substring(article.length) is equal to the article
+    //console.log(`a: ${a} bandName: ${bandName.substr(0, length)}`);
+    if (bandName.substr(0, length) == a ) {
+      // if true, remove article and compare it below
+      //console.log(bandName.substr(length, bandName.length +1))
+      return bandName.substr(length, bandName.length);
+    }
+  });
+
+  return bandName;
+}
+// console.log(sortedBands);
 </script>
 
 </body>
