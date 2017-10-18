@@ -12,6 +12,48 @@
 <script>
   window.SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
+  const recognition = new SpeechRecognition();
+  recognition.interimResults = true;
+
+  let p = document.createElement('p');
+  const words = document.querySelector('.words');
+  words.appendChild(p);
+
+  recognition.addEventListener('result', e => {
+    const transcript = Array.from(e.results)
+    // Convert to an array from a list
+    .map(result => result[0])
+    // Get the transcript property from the array
+    .map(result => result.transcript)
+    // Join the transcript array into a single string
+    .join('')
+
+    p.textContent = transcript;
+
+    // If the sentence is over, create a new paragraph
+    // element and append it to words
+    if(e.results[0].isFinal){
+      p = document.createElement('p');
+      words.appendChild(p);
+    }
+
+    //Example Use Case: Voice Commands
+    // Would be improved by debouncing
+    if(transcript.includes("get the weather")){
+      p = document.createElement('p');
+      words.appendChild(p);
+      p.textContent = "Getting the Weather! 🌩️️️️️️"
+    }
+
+    console.log(transcript);
+  });
+
+  // Once the result has been returned from the event
+  // the event unbinds itself, so we reinstantiate it here
+  recognition.addEventListener('end', recognition.start)
+
+  recognition.start();
+
 
 </script>
 
